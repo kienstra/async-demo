@@ -13,7 +13,7 @@ In `helpers.test.ts`, remove the `try/catch` block, leaving only the line that w
 
 Do `npm run test` and see how the test fails, as the failed request throws an uncaught error.
 
-It's simple to use `asycn` and `await`, but they don't catch errors.
+It's simple to use `async` and `await`, but they don't catch errors.
 
 If this request failed outside of a `try` block, like with a `404`:
 
