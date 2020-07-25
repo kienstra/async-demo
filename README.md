@@ -1,44 +1,36 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Async JavaScript Demo
 
-## Available Scripts
+### Setup
 
-In the project directory, you can run:
+```sh
+$ npm install
+$ npm run test
+```
 
-### `yarn start`
+### Explanation
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+In `helpers.test.ts`, remove the `try/catch` block, leaving only the line that was in `try`.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Do `npm run test` and see how the test fails, as the failed request throws an uncaught error.
 
-### `yarn test`
+It's simple to use `await` and `async`, but they don't catch errors.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If this request failed outside of a `try` block, like with a `404`:
 
-### `yarn build`
+```js
+const response = await axios.get('http://localhost:3000/endpoint/does-not-exist');
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+...there would be an uncaught error:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+<img width="911" alt="uncaught-error" src="https://user-images.githubusercontent.com/4063887/88448568-c9db3980-ce04-11ea-8090-09493381762e.png">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Instead of using `await`, calling the `axios.get` Promise with `.then()` or `.catch()` will prevent the uncaught error:
 
-### `yarn eject`
+```js
+axios.get('http://localhost:3000/endpoint/does-not-exist').then((result) => console.log(result));
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Calling `.catch()` is only needed if you want to do something on an error.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Using `async` and `await` is usually easier, but you may want to catch errors.
