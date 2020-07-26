@@ -1,5 +1,8 @@
 import axios from 'axios';
 
-export const requestForComments = () => {
-  return axios.get('/endpoint/does-not-exist')
+/**
+ * Makes a request for comments.
+ */
+export const requestForComments = async () => {
+  return await axios.get("/endpoint/does-not-exist");
 };
